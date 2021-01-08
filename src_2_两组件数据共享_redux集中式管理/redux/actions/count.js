@@ -1,4 +1,4 @@
-import { INCREMENT, DECREMENT } from './constant'
+import { INCREMENT, DECREMENT } from '../../redux/constant'
 
 function countIncrementAction(value) {
     return {

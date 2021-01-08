@@ -1,30 +1,31 @@
 import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
 import store from '../../redux/store';
-import { 
-    countDecrementAction, 
-    countIncrementAction, 
-    countIncrementAsyncAction 
-} from '../../redux/count_action';
+import {
+    countDecrementAction,
+    countIncrementAction,
+    countIncrementAsyncAction
+} from '../../redux/actions/count';
 
 
-export default class CountUI extends Component {
+class CountUI extends Component {
     container = React.createRef();
     handleCount = (type) => {
         return () => {
             const { value } = this.container.current;
             if (type === 'increment') {
-                store.dispatch(countIncrementAction(value * 1));
+                this.props.countIncrementAction(value * 1);
             }
             if (type === 'decrement') {
-                store.dispatch(countDecrementAction(value * 1));
+                this.props.countDecrementAction(value * 1);
             }
             if (type === 'incrementIfOdd') {
                 if (store.getState() % 2 !== 0) {
-                    store.dispatch(countIncrementAction(value * 1))
+                    this.props.countIncrementAction(value * 1);
                 }
             }
             if (type === 'incrementAsync') {
-                store.dispatch(countIncrementAsyncAction(value * 1, 500))
+                this.props.countIncrementAsyncAction(value * 1, 500)
             }
         }
     }
@@ -32,7 +33,8 @@ export default class CountUI extends Component {
         return (
             <Fragment>
                 <h2>这是Count组件</h2>
-                <h2>当前求和为:{store.getState()}</h2>
+                <h2>当前求和为:{this.props.sum}</h2>
+                <h2>Person组件的总人数:{this.props.personNum.length}</h2>
                 <select ref={this.container}>
                     <option value='1'>1</option>
                     <option value='2'>2</option>
@@ -46,3 +48,15 @@ export default class CountUI extends Component {
         )
     }
 }
+
+export default connect(
+    state => ({
+        sum: state.count,
+        personNum: state.person
+    }),
+    {
+        countDecrementAction,
+        countIncrementAction,
+        countIncrementAsyncAction
+    }
+)(CountUI)

@@ -1,4 +1,4 @@
-import {INCREMENT, DECREMENT} from './constant';
+import {INCREMENT, DECREMENT} from '../../redux/constant';
 
 export default function countReducer(preState=666, action){
     const{type, data}=action;
